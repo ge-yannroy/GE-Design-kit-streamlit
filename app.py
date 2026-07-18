@@ -67,7 +67,7 @@ with ge_surface("operations"):
     st.subheader("Choisir la votation à analyser")
 
     with ge_surface("kpi-row", variant="inset"):
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4, c5 = st.columns(5)
         with c1:
             ge_kpi(4, "Opérations disponibles", key="kpi_total")
         with c2:
@@ -76,6 +76,8 @@ with ge_surface("operations"):
             ge_kpi(1, "Analyse en cours", key="kpi_progress")
         with c4:
             ge_kpi(1, "Non démarrée", key="kpi_none")
+        with c5:
+            ""  # colonne vide pour l'espacement
 
         st.divider()
 

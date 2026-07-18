@@ -39,6 +39,7 @@ SURFACE_VARIANTS = {
             border-radius: var(--md-sys-shape-corner-medium);
             background: var(--md-sys-color-surface-bright);
             padding: calc(var(--spacing) * 4) calc(var(--spacing) * 6);
+            gap: 0.5rem;
         """,
     },
 }

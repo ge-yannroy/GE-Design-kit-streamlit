@@ -14,15 +14,14 @@ _ge_kpi = st.components.v2.component(
     .ge-kpi {
         background: var(--md-sys-color-surface, var(--st-secondary-background-color));
         border-radius: var(--md-sys-shape-corner-medium, var(--st-base-radius));
-        padding: calc(var(--spacing, 4px) * 5) calc(var(--spacing, 4px) * 6);
+        padding: 0.5rem 1rem;
         font-family: var(--st-font);
         /* Elevation shadow/2 */
         box-shadow:
-            0 1px 2px 0 rgba(24, 31, 37, 0.30),
-            0 1px 6px 2px rgba(24, 31, 37, 0.15);
+            0 1px 2px 0 rgba(24, 31, 37, 0.30);
     }
     .ge-kpi-num {
-        font-size: var(--md-sys-typescale-headline-small-size, 1.6em);
+        font-size: 22px;
         font-weight: 600;
         color: var(--md-sys-color-on-surface);
         line-height: 1;
@@ -30,7 +29,7 @@ _ge_kpi = st.components.v2.component(
     .ge-kpi-lbl {
         font-size: var(--md-sys-typescale-label-medium-size, 0.8em);
         color: var(--md-sys-color-on-surface-variant);
-        margin-top: calc(var(--spacing, 4px) * 1.5);
+        margin-top: 0;
     }
     """,
     js="""
