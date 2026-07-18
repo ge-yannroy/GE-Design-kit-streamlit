@@ -63,7 +63,7 @@ Détails complets de chaque fonction (docstrings) directement dans le code sourc
 
 Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.toggle`, `st.button`/`st.form_submit_button` (types `"secondary"`/`"tertiary"`), titres (`st.title`, `#`/`##`/`###`).
 
-**Non stylable** : `st.dataframe` (rendu sur `<canvas>`, pas de CSS possible , limitation Streamlit connue, tickets #7495/#8632). Sa police par défaut est déjà 14px cela dit.
+**Non stylable** : `st.dataframe` (rendu sur `<canvas>`, pas de CSS possible.
 
 ---
 
