@@ -12,6 +12,7 @@ from .tokens import TOKENS_CSS
 from .layout import LAYOUT_CSS
 from .surface import SURFACE_CSS
 from .forms import FORMS_CSS
+from .buttons import BUTTONS_CSS
 
 
 def inject_ge_styles():
@@ -19,5 +20,5 @@ def inject_ge_styles():
     A appeler UNE SEULE FOIS, tout en haut de app.py — remplace les
     3 appels inject_ge_fonts() + inject_ge_tokens() + inject_ge_layout().
     """
-    combined = f"<style>{FONT_IMPORT_CSS}{TOKENS_CSS}{LAYOUT_CSS}{SURFACE_CSS}{FORMS_CSS}</style>"
+    combined = f"<style>{FONT_IMPORT_CSS}{TOKENS_CSS}{LAYOUT_CSS}{SURFACE_CSS}{FORMS_CSS}{BUTTONS_CSS}</style>"
     st.html(combined)

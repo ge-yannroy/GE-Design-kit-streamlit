@@ -50,18 +50,40 @@ st.logo("assets/mon_logo.svg", size="small")
 | `ge_surface(key, variant)` | Conteneur de page, peut contenir n'importe quel widget (contrairement à `ge_card`). | `variant="card"` (blanc+ombre) ou `"inset"` (teinté, sans ombre) | context manager |
 | `ge_card(title, content, icon, button_label, key)` | Card figée (titre+texte+bouton). Composant CCv2, ne peut pas contenir d'autres widgets. | tous optionnels sauf `title`/`content` | `True` si bouton cliqué |
 | `ge_kpi(value, label, key)` | KPI card simple, sans interaction. | tous requis | - |
-| `ge_label_spacer(height_px=10)` | Aligne un bouton sans label avec des champs voisins labellisés. | - | - |
-| `ICON_BUTTON_KEY_PREFIX` | Constante, wrapper un bouton dans `st.container(key=f"{PREFIX}xxx")` pour un style icône ronde. | - | - |
 
-Icônes : nom **Material Symbols** (ex: `"search"`), pas d'emoji, liste sur [fonts.google.com/icons](https://fonts.google.com/icons).
+Icônes : nom **Material Symbols** (ex: `"search"`), pas d'emoji — liste sur [fonts.google.com/icons](https://fonts.google.com/icons).
 
 Détails complets de chaque fonction (docstrings) directement dans le code source de `ge_design_kit/`.
 
 ---
 
+## Boutons
+
+`st.button()` n'accepte pas de classe CSS personnalisée, le style passe donc par un **conteneur enveloppant**, pas par le bouton lui-même. Trois variantes, vocabulaire Material Design 3 (déjà utilisé partout ailleurs dans le kit) :
+
+```python
+from ge_design_kit import FILLED_BUTTON_KEY_PREFIX, OUTLINED_BUTTON_KEY_PREFIX, TEXT_BUTTON_KEY_PREFIX
+
+with st.container(key=f"{OUTLINED_BUTTON_KEY_PREFIX}mon_bouton"):
+    if st.button("Importer manuellement", icon=":material/upload:", key="btn_import"):
+        ...
+```
+
+| Variante | Rendu | Usage typique |
+|---|---|---|
+| `FILLED_BUTTON_KEY_PREFIX` | Fond `primary` plein | Bouton icône seule (ex: recherche) |
+| `OUTLINED_BUTTON_KEY_PREFIX` | Contour fin, fond transparent | Action secondaire (ex: "Importer", "Comparer") |
+| `TEXT_BUTTON_KEY_PREFIX` | Pas de bordure ni de fond, libellé coloré | Action discrète (ex: "Annuler la sélection") |
+
+`ge_label_spacer(height_px=10)` - aligne un bouton (sans label au-dessus) avec des champs voisins qui, eux, en affichent un (`text_input`, `selectbox`...).
+
+⚠️ `ICON_BUTTON_KEY_PREFIX` / `PILL_BUTTON_KEY_PREFIX` existent encore comme alias de `FILLED_`/`OUTLINED_BUTTON_KEY_PREFIX` (ancien nommage), à préférer les noms `FILLED_`/`OUTLINED_`/`TEXT_` dans tout nouveau code.
+
+---
+
 ## Widgets natifs stylés automatiquement
 
-Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.toggle`, `st.button`/`st.form_submit_button` (types `"secondary"`/`"tertiary"`), titres (`st.title`, `#`/`##`/`###`).
+Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.toggle`, `st.button`/`st.form_submit_button` (types `"secondary"`/`"tertiary"`, cf. section Boutons ci-dessus), titres (`st.title`, `#`/`##`/`###`).
 
 **Non stylable** : `st.dataframe` (rendu sur `<canvas>`, pas de CSS possible.
 
@@ -75,6 +97,8 @@ Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.tog
 - **`st.container(key="...")`** génère une classe `.st-key-<key>` , le moyen fiable de cibler un élément précis en CSS.
 - **`height:100%` casse si un seul niveau de la chaîne de parents n'a pas de hauteur définie** , Streamlit imbrique beaucoup de wrappers ; en cas de doute, préférer une hauteur fixe calibrée visuellement.
 - **On ne peut pas modifier `st.session_state[key]` après instanciation du widget dans le run courant** , pour un reset programmatique, poser un drapeau et l'appliquer au début du run suivant.
+- **Un bouton dans un conteneur flex peut se faire comprimer** (texte qui passe à la ligne) si son conteneur n'a pas `flex-shrink: 0` , toujours l'ajouter explicitement sur les boutons custom.
+- **`:hover` s'applique aussi aux boutons `disabled` par défaut** , utiliser `:not(:disabled):hover` pour l'exclure.
 
 ---
 

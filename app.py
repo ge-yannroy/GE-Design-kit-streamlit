@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 from ge_design_kit import (
     inject_ge_styles, TOPBAR_SLOT_KEY, ge_topbar, ge_breadcrumb, ge_surface,
-    ge_label_spacer, ICON_BUTTON_KEY_PREFIX, ge_kpi, ge_sidebar,
+    ge_label_spacer, ICON_BUTTON_KEY_PREFIX, PILL_BUTTON_KEY_PREFIX,
+    TEXT_BUTTON_KEY_PREFIX, ge_kpi, ge_sidebar,
 )
 
 st.set_page_config(page_title="MemIA — POC GE-DESIGN", layout="wide")
@@ -60,7 +61,24 @@ ge_breadcrumb(items=[
     {"id": "home", "label": "Accueil"},
     {"id": "operations", "label": "Sélectionner une opération"},
 ])
-st.title("Sélectionner une opération")
+
+title_col, action_col = st.columns([5, 2], vertical_alignment="center")
+with title_col:
+    st.title("Sélectionner une opération")
+with action_col:
+    # Colonne interne pour pousser le bouton contre le bord droit
+    _, btn_col = st.columns([1, 3])
+    with btn_col:
+        with st.container(key=f"{PILL_BUTTON_KEY_PREFIX}import_manuel"):
+            import_clicked = st.button(
+                "Importer manuellement",
+                icon=":material/upload:",
+                key="btn_import_manuel",
+                width="stretch",
+            )
+if import_clicked:
+    # Pas d'action pour l'instant — à brancher plus tard
+    pass
 
 # ── Tout le contenu de la page vit dans UNE seule carte GE-DESIGN ──
 with ge_surface("operations"):
@@ -245,32 +263,35 @@ with ge_surface("operations"):
                 sb_left, sb_right = st.columns(2)
                 with sb_left:
                     st.markdown(f"**Nombre d'opération(s) sélectionnée(s) : {count}**")
-                    if st.button(
-                        "Annuler la sélection",
-                        icon=":material/close:",
-                        type="tertiary",
-                        disabled=(count == 0),
-                        key="btn_clear_selection",
-                    ):
-                        # On ne peut pas modifier session_state.operations_table
-                        # ICI (le widget a déjà été instancié plus haut dans ce
-                        # run) — on pose juste le drapeau, le vrai reset aura
-                        # lieu au tout début du PROCHAIN run (cf. haut du fichier).
-                        st.session_state.reset_operations_selection = True
-                        st.rerun()
+                    with st.container(key=f"{TEXT_BUTTON_KEY_PREFIX}clear_selection"):
+                        if st.button(
+                            "Annuler la sélection",
+                            icon=":material/close:",
+                            type="tertiary",
+                            disabled=(count == 0),
+                            key="btn_clear_selection",
+                        ):
+                            # On ne peut pas modifier session_state.operations_table
+                            # ICI (le widget a déjà été instancié plus haut dans ce
+                            # run) — on pose juste le drapeau, le vrai reset aura
+                            # lieu au tout début du PROCHAIN run (cf. haut du fichier).
+                            st.session_state.reset_operations_selection = True
+                            st.rerun()
                 with sb_right:
                     with st.container(key="ge-button-group"):
-                        st.button(
-                            "Comparer",
-                            type="secondary",
-                            disabled=(count == 0),
-                            key="btn_compare",
-                        )
-                        st.button(
-                            "Exporter",
-                            type="secondary",
-                            disabled=(count == 0),
-                            key="btn_export",
-                        )
+                        with st.container(key=f"{PILL_BUTTON_KEY_PREFIX}compare"):
+                            st.button(
+                                "Comparer",
+                                type="secondary",
+                                disabled=(count == 0),
+                                key="btn_compare",
+                            )
+                        with st.container(key=f"{PILL_BUTTON_KEY_PREFIX}export"):
+                            st.button(
+                                "Exporter",
+                                type="secondary",
+                                disabled=(count == 0),
+                                key="btn_export",
+                            )
 
 st.caption(f"Debug — page active : `{st.session_state.current_page}`")

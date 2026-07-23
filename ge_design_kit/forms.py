@@ -1,15 +1,8 @@
 """
 ge_design_kit.forms
 ---------------------
-Styles CSS pour les widgets Streamlit NATIFS (text_input, selectbox,
-toggle, button) — pas de composant CCv2 ici.
+Styles CSS pour les widgets Streamlit NATIFS (text_input, selectbox, toggle) — pas de composant CCv2 ici.
 """
-
-import streamlit as st
-
-# Préfixe pour les boutons "icône seule" (ex: bouton recherche rond) —
-# même pattern de convention que SURFACE_VARIANTS dans surface.py.
-ICON_BUTTON_KEY_PREFIX = "ge-btn-icon-"
 
 # Dimensions du toggle (rail + curseur) — ajustables directement ici.
 TOGGLE_TRACK_WIDTH_PX = 44
@@ -38,6 +31,9 @@ FORMS_CSS = f"""
     border-color: var(--md-sys-color-primary) !important;
     box-shadow: 0 0 0 1px var(--md-sys-color-primary) !important;
 }}
+
+/* ── Selectbox (st.selectbox) : alignement vertical du champ + icône ──
+*/
 [data-testid="stSelectbox"] .react-aria-ComboBox [role="group"] {{
     border-radius: var(--md-sys-shape-corner-extra-small) !important;
     border: 1px solid var(--md-sys-color-outline) !important;
@@ -52,67 +48,43 @@ FORMS_CSS = f"""
 [data-testid="stSelectbox"] .react-aria-ComboBox [role="group"] input[role="combobox"] {{
     font-size: 16px !important;
 }}
-[class*="st-key-{ICON_BUTTON_KEY_PREFIX}"] button {{
-    border-radius: var(--md-sys-shape-corner-full) !important;
-    background: var(--md-sys-color-primary) !important;
-    border: none !important;
-    width: 56px !important;
-    height: 56px !important;
-    padding: 0 !important;
-    min-width: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}}
-[class*="st-key-{ICON_BUTTON_KEY_PREFIX}"] button * {{
-    color: var(--md-sys-color-on-primary) !important;
-    font-size: 1.5rem;
-}}
+
+/* ── Toggle (st.checkbox) : rail + curseur, alignement vertical ── 
+*/
 [data-testid="stCheckbox"] label > div:first-of-type {{
     width: {TOGGLE_TRACK_WIDTH_PX}px !important;
     height: {TOGGLE_TRACK_HEIGHT_PX}px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 2px !important;
+    box-sizing: border-box !important;
 }}
 [data-testid="stCheckbox"] label > div:first-of-type > div {{
     width: {TOGGLE_THUMB_SIZE_PX}px !important;
     height: {TOGGLE_THUMB_SIZE_PX}px !important;
+    transform: none !important;
+    margin-left: 0;
+    transition: margin-left 0.15s ease;
+}}
+[data-testid="stCheckbox"] label[data-selected="true"] > div:first-of-type > div {{
+    margin-left: auto !important;
 }}
 [data-testid="stCheckbox"] label {{
     align-items: center !important;
 }}
+
+/* ── Alignement vertical d'une ligne de filtres (input/select/toggle) ──
+   ── à poser sur un st.container(key="ge-filter-row") englobant la ligne. ── */
 .st-key-ge-filter-row [data-testid="stHorizontalBlock"] {{
     align-items: center !important;
 }}
+
+/* ── Formulaire de recherche (champ + bouton submit lié via Entrée) ──
+   ── st.form ajoute par défaut une boîte/padding : on la neutralise ──
+   ── pour ne garder que notre propre mise en page ── */
 .st-key-ge-search-form {{
     border: none !important;
     padding: 0 !important;
     background: transparent !important;
 }}
-.st-key-ge-surface-inset-selection-bar button {{
-    border-radius: 30px !important;
-    padding: 0 1rem;
-}}
-.st-key-ge-surface-inset-selection-bar button:disabled {{
-    border: 1px solid var(--md-sys-color-state-opacity-12, rgba(0, 51, 85, 0.12)) !important;
-}}
-.st-key-ge-selection-bar-row [data-testid="stHorizontalBlock"] {{
-    justify-content: space-between !important;
-}}
-.st-key-ge-selection-bar-row [data-testid="stColumn"] {{
-    flex: 0 1 auto !important;
-    width: auto !important;
-}}
-.st-key-ge-button-group {{
-    display: flex !important;
-    flex-direction: row !important;
-    gap: calc(var(--spacing) * 2) !important;
-    align-items: center !important;
-}}
 """
-
-
-def ge_label_spacer(height_px: int = 10):
-    """
-    Espaceur invisible de la hauteur d'un label de widget Streamlit
-    (10px par défaut, calibré visuellement).
-    """
-    st.html(f'<div style="height:{height_px}px;"></div>')
