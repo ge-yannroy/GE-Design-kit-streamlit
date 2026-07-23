@@ -97,6 +97,13 @@ hr {{
     width: auto !important;
 }}
 */
+
+/* ── Ligne de titre + actions (st.title() + boutons) : padding-bottom ──
+   ── pour espacer du contenu suivant, à poser sur un st.container()
+*/
+.st-key-ge-header-row {{
+    margin-bottom: 1rem !important;
+}}
 """
 
 _LAYOUT_CSS = f"<style>{_LAYOUT_CSS_BODY}</style>"
