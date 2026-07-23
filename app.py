@@ -62,7 +62,8 @@ ge_breadcrumb(items=[
     {"id": "operations", "label": "Sélectionner une opération"},
 ])
 
-title_col, action_col = st.columns([5, 2], vertical_alignment="center")
+with st.container(key="ge-header-row"):
+    title_col, action_col = st.columns([5, 2], vertical_alignment="top")
 with title_col:
     st.title("Sélectionner une opération")
 with action_col:
