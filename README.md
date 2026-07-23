@@ -96,7 +96,7 @@ Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.tog
 - **Ne jamais cibler les classes `st-emotion-cache-*`** (instables, régénérées à chaque build) , chercher un `data-testid` ou un rôle ARIA stable à la place.
 - **`st.container(key="...")`** génère une classe `.st-key-<key>` , le moyen fiable de cibler un élément précis en CSS.
 - **`height:100%` casse si un seul niveau de la chaîne de parents n'a pas de hauteur définie** , Streamlit imbrique beaucoup de wrappers ; en cas de doute, préférer une hauteur fixe calibrée visuellement.
-- **On ne peut pas modifier `st.session_state[key]` après instanciation du widget dans le run courant** , pour un reset programmatique, poser un drapeau et l'appliquer au début du run suivant.
+- **On ne peut pas modifier `st.session_state[key]` après instanciation du widget dans le run courant.** Pour un reset ponctuel, poser un drapeau et l'appliquer au début du run suivant peut suffire, mais ce n'est pas fiable pour des resets répétés (fonctionne la première fois, pas forcément les suivantes, comportement interne de Streamlit non documenté). La solution robuste : rendre la `key` du widget dynamique (ex: un compteur incrémenté à chaque reset, `key=f"mon_widget_{compteur}"`). Changer la `key` force Streamlit à traiter le widget comme entièrement nouveau, sans aucun état résiduel possible.
 - **Un bouton dans un conteneur flex peut se faire comprimer** (texte qui passe à la ligne) si son conteneur n'a pas `flex-shrink: 0` , toujours l'ajouter explicitement sur les boutons custom.
 - **`:hover` s'applique aussi aux boutons `disabled` par défaut** , utiliser `:not(:disabled):hover` pour l'exclure.
 
