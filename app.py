@@ -27,16 +27,17 @@ if "current_page" not in st.session_state:
 # cocher du futur tableau d'opérations) ──
 if "selected_count" not in st.session_state:
     st.session_state.selected_count = 0
-# ── Drapeau de reset différé : on ne peut PAS écrire directement dans
-# st.session_state.operations_table après que ce widget ait déjà été
-# instancié dans le run courant (StreamlitAPIException). Le bouton
-# "Annuler" s'exécute forcément APRÈS st.dataframe() dans le code (à
-# cause du pattern st.empty(), cf. plus bas), donc on se contente de
-# poser ce drapeau ici, et on applique le vrai reset tout en haut du
-# PROCHAIN run — avant que le widget ne soit recréé. ──
-if st.session_state.get("reset_operations_selection"):
-    st.session_state.operations_table = {"selection": {"rows": []}}
-    st.session_state.reset_operations_selection = False
+# ── Compteur de reset : incrémenté à chaque clic sur "Annuler la
+# sélection". Utilisé pour construire une clé DYNAMIQUE pour
+# st.dataframe (cf. table_key plus bas), changer la clé force
+# Streamlit à traiter le tableau comme un widget entièrement NOUVEAU,
+# sans aucun état résiduel. Plus robuste que réécrire directement
+# st.session_state["operations_table"] : cette dernière approche
+# fonctionnait la première fois mais pas la seconde (Streamlit semble
+# garder un état de sélection interne qu'un simple écrasement du
+# dict ne suffit pas à effacer de façon fiable et répétée). ──
+if "operations_table_reset_counter" not in st.session_state:
+    st.session_state.operations_table_reset_counter = 0
 
 # ── Sidebar native (position fixe, collapse natif) + composant à l'intérieur ──
 with st.sidebar:
@@ -56,7 +57,7 @@ with st.sidebar:
         st.session_state.current_page = selected
         st.rerun()
 
-# ── Contenu principal : plein-largeur (pas de st.columns pour la sidebar) ──
+# ── Contenu principal : plein-largeur (plus de st.columns pour la sidebar) ──
 ge_breadcrumb(items=[
     {"id": "home", "label": "Accueil"},
     {"id": "operations", "label": "Sélectionner une opération"},
@@ -236,9 +237,14 @@ with ge_surface("operations"):
 
     display_df = filtered_df.drop(columns=["Type de scrutin", "Canal"])
 
+    # La clé change à chaque reset (cf. operations_table_reset_counter
+    # tout en haut du fichier), Streamlit traite alors le tableau comme
+    # un nouveau widget, sans aucune sélection résiduelle possible.
+    table_key = f"operations_table_{st.session_state.operations_table_reset_counter}"
+
     event = st.dataframe(
         display_df,
-        key="operations_table",
+        key=table_key,
         hide_index=True,
         width="stretch",
         on_select="rerun",
@@ -272,11 +278,10 @@ with ge_surface("operations"):
                             disabled=(count == 0),
                             key="btn_clear_selection",
                         ):
-                            # On ne peut pas modifier session_state.operations_table
-                            # ICI (le widget a déjà été instancié plus haut dans ce
-                            # run) — on pose juste le drapeau, le vrai reset aura
-                            # lieu au tout début du PROCHAIN run (cf. haut du fichier).
-                            st.session_state.reset_operations_selection = True
+                            # Incrémente le compteur -> la clé du tableau change au
+                            # prochain run -> Streamlit le recrée comme un widget
+                            # tout neuf, sans sélection résiduelle possible.
+                            st.session_state.operations_table_reset_counter += 1
                             st.rerun()
                 with sb_right:
                     with st.container(key="ge-button-group"):
