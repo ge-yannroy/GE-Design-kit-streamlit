@@ -9,6 +9,7 @@ TOGGLE_TRACK_WIDTH_PX = 44
 TOGGLE_TRACK_HEIGHT_PX = 24
 TOGGLE_THUMB_SIZE_PX = 20
 GE_TOGGLE_KEY_PREFIX = "ge-toggle-"
+GE_CHEKBOX_KEY_PREFIX = "ge-checkbox-"
 
 FORMS_CSS = f"""
 [data-testid="stTextInputRootElement"] {{
@@ -72,6 +73,11 @@ FORMS_CSS = f"""
 }}
 [data-testid="stCheckbox"] label {{
     align-items: center !important;
+}}
+
+[class*="st-key-{GE_CHEKBOX_KEY_PREFIX}"] label > div:first-of-type {{
+    width: 20px !important;
+    height: 20px !important;
 }}
 
 /* ── Alignement vertical d'une ligne de filtres (input/select/toggle) ──

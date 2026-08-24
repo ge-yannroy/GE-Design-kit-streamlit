@@ -20,7 +20,7 @@ from ge_design_kit import (
     inject_ge_styles, TOPBAR_SLOT_KEY, ge_topbar, ge_breadcrumb, ge_surface,
     ge_card, ge_kpi, ge_sidebar, ge_label_spacer,
     FILLED_BUTTON_KEY_PREFIX, ICON_BUTTON_KEY_PREFIX, OUTLINED_BUTTON_KEY_PREFIX,
-    TEXT_BUTTON_KEY_PREFIX, GE_TOGGLE_KEY_PREFIX,
+    TEXT_BUTTON_KEY_PREFIX, GE_TOGGLE_KEY_PREFIX, GE_CHEKBOX_KEY_PREFIX,
 )
 
 st.set_page_config(page_title="GE-Design-kit — Galerie de composants", layout="wide")
@@ -320,7 +320,8 @@ st.write(
 def demo_checkbox_toggle():
     col1, col2 = st.columns(2)
     with col1:
-        st.checkbox("Case à cocher standard", value=True, key="gallery_checkbox")
+        with st.container(key=f"{GE_CHEKBOX_KEY_PREFIX}gallery_checkbox"):
+            st.checkbox("Case à cocher standard", value=True, key="gallery_checkbox")
     with col2:
         with st.container(key=f"{GE_TOGGLE_KEY_PREFIX}gallery_toggle"):
             st.toggle("Interrupteur (switch)", value=True, key="gallery_toggle")
