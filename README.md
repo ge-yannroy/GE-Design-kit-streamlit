@@ -17,6 +17,27 @@ Le kit n'est pas un package pip, copier le dossier `ge_design_kit/`, `assets/` e
 
 ---
 
+## Lancer l'application
+
+```bash
+streamlit run app.py --server.port 8501
+```
+
+---
+
+## Galerie de composants
+
+```bash
+streamlit run gallery.py --server.port 8502
+```
+
+Outil de développement autonome (pas une page de l'app) : rendu réel
+de chaque composant du kit **+ le code Python exact qui l'a produit**
+sous chaque exemple, pour démarrer rapidement sans relire tout ce
+README. Voir `gallery.py`.
+
+---
+
 ## Démarrage rapide
 
 ```python
@@ -99,6 +120,28 @@ Une fois `inject_ge_styles()` appelé : `st.text_input`, `st.selectbox`, `st.tog
 - **On ne peut pas modifier `st.session_state[key]` après instanciation du widget dans le run courant.** Pour un reset ponctuel, poser un drapeau et l'appliquer au début du run suivant peut suffire, mais ce n'est pas fiable pour des resets répétés (fonctionne la première fois, pas forcément les suivantes, comportement interne de Streamlit non documenté). La solution robuste : rendre la `key` du widget dynamique (ex: un compteur incrémenté à chaque reset, `key=f"mon_widget_{compteur}"`). Changer la `key` force Streamlit à traiter le widget comme entièrement nouveau, sans aucun état résiduel possible.
 - **Un bouton dans un conteneur flex peut se faire comprimer** (texte qui passe à la ligne) si son conteneur n'a pas `flex-shrink: 0` , toujours l'ajouter explicitement sur les boutons custom.
 - **`:hover` s'applique aussi aux boutons `disabled` par défaut** , utiliser `:not(:disabled):hover` pour l'exclure.
+
+---
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest tests/
+```
+
+Un seul test pour l'instant: `tests/test_data_testid_smoke.py`. Le kit
+style les widgets natifs Streamlit via des sélecteurs `[data-testid="..."]`
+(cf. Pièges à connaître ci-dessus), une convention interne à Streamlit,
+pas une API publique, qui peut changer de nom d'une version à l'autre
+sans erreur ni changelog (déjà arrivé : `stLogo` est devenu
+`stSidebarLogo`/`stHeaderLogo`, et le topbar s'est mis à se faire
+chevaucher silencieusement par le logo, sans qu'aucune exception ne
+soit levée nulle part). Ce test grep le bundle JS de Streamlit
+installé pour vérifier que chaque `data-testid` dont le kit dépend
+existe encore, sans navigateur, en ~0.3s — pour transformer un futur
+renommage silencieux en échec de test immédiat plutôt qu'en régression
+visuelle découverte par hasard.
 
 ---
 
