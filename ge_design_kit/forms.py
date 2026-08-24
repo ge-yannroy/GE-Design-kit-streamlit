@@ -8,6 +8,7 @@ Styles CSS pour les widgets Streamlit NATIFS (text_input, selectbox, toggle) —
 TOGGLE_TRACK_WIDTH_PX = 44
 TOGGLE_TRACK_HEIGHT_PX = 24
 TOGGLE_THUMB_SIZE_PX = 20
+GE_TOGGLE_KEY_PREFIX = "ge-toggle-"
 
 FORMS_CSS = f"""
 [data-testid="stTextInputRootElement"] {{

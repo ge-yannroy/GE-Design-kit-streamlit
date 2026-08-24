@@ -143,6 +143,7 @@ _PRIMITIVES = """
     --md-ref-shadow-universal-opacity-0: rgba(24, 31, 37, 0.00);
     --md-ref-shadow-universal-opacity-8: rgba(24, 31, 37, 0.08);
     --md-ref-shadow-universal-opacity-15: rgba(24, 31, 37, 0.15);
+    --md-ref-shadow-universal-opacity-40: rgba(24, 31, 37, 0.40);
     --md-ref-shadow-universal-opacity-80: rgba(24, 31, 37, 0.80);
 
     --md-ref-spacings-0: 0px;
@@ -342,7 +343,7 @@ _SEMANTIC_LIGHT = """
     --md-sys-color-success: var(--md-ref-palette-success-40);
     --md-sys-color-background: var(--md-ref-palette-secondary-98);
     --md-sys-color-shadow: var(--md-ref-shadow-light-opacity-0);
-    --md-sys-color-scrim: var(--md-ref-shadow-light-opacity-8);
+    --md-sys-color-scrim: var(--md-ref-shadow-universal-opacity-40);
     --md-sys-color-state-opacity-0: var(--md-ref-shadow-light-opacity-0);
     --md-sys-color-state-opacity-8: var(--md-ref-shadow-light-opacity-8);
     --md-sys-color-state-opacity-12: var(--md-ref-shadow-light-opacity-12);

@@ -87,22 +87,18 @@ h2, h3 {{
 hr {{
     margin: 1rem 0 !important; /* supprime le margin par défaut de Streamlit */
 }}
-
-/* ── Filet de sécurité si size="small"/"large" de st.logo() ne suffit pas. ──
-   ── data-testid à vérifier via l'inspecteur si ça ne matche pas — ──
-   ── décommenter seulement en dernier recours. ── */
-/*
-[data-testid="stLogo"] {{
-    height: 20px !important;
-    width: auto !important;
+[data-testid="stHeaderLogo"] {{
+    margin-left: 110px !important;
 }}
-*/
 
 /* ── Ligne de titre + actions (st.title() + boutons) : padding-bottom ──
    ── pour espacer du contenu suivant, à poser sur un st.container()
 */
 .st-key-ge-header-row {{
     margin-bottom: 1rem !important;
+}}
+.st-key-ge-header-row [class*="st-key-ge-btn-"] {{
+    align-items: flex-end !important;
 }}
 """
 

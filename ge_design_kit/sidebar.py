@@ -96,10 +96,27 @@ _ge_sidebar = st.components.v2.component(
             }
             const el = document.createElement('div');
             el.className = 'ge-sidebar-item' + (item.id === data.active_id ? ' active' : '');
-            el.innerHTML =
-                '<span class="icon material-symbols-outlined">' + (item.icon || '') + '</span>' +
-                '<span>' + item.label + '</span>' +
-                (item.has_children ? '<span class="chevron material-symbols-outlined">chevron_right</span>' : '');
+
+            // DOM methods + textContent, jamais innerHTML avec des
+            // données concaténées — item.label/item.icon viennent de
+            // l'appelant Python et ne doivent jamais être interprétés
+            // comme du HTML (cf. Pièges à connaître dans le README).
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'icon material-symbols-outlined';
+            iconSpan.textContent = item.icon || '';
+            el.appendChild(iconSpan);
+
+            const labelSpan = document.createElement('span');
+            labelSpan.textContent = item.label || '';
+            el.appendChild(labelSpan);
+
+            if (item.has_children) {
+                const chevron = document.createElement('span');
+                chevron.className = 'chevron material-symbols-outlined';
+                chevron.textContent = 'chevron_right';
+                el.appendChild(chevron);
+            }
+
             el.onclick = () => setTriggerValue('selected', item.id);
             nav.appendChild(el);
         });

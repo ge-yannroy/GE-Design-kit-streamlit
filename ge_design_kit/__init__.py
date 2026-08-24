@@ -16,6 +16,7 @@ from .buttons import (
 from .card import ge_card
 from .kpi import ge_kpi
 from .sidebar import ge_sidebar
+from .forms import GE_TOGGLE_KEY_PREFIX
 
 __all__ = [
     "inject_ge_styles",
@@ -35,4 +36,5 @@ __all__ = [
     "ge_card",
     "ge_kpi",
     "ge_sidebar",
+    "GE_TOGGLE_KEY_PREFIX",
 ]
