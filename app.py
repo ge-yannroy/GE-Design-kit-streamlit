@@ -2,6 +2,20 @@ import streamlit as st
 
 from ge_design_kit import inject_ge_styles, TOPBAR_SLOT_KEY, ge_topbar, ge_sidebar
 
+from debug_utils import (
+    is_debug_enabled,
+    log_session_state,
+    render_debug_panel,
+    render_debug_console_page,
+)
+
+if st.query_params.get("debug_console") == "1":
+    if is_debug_enabled():
+        render_debug_console_page()
+    else:
+        st.error("Mode debug non activé sur cette session.")
+    st.stop()
+
 st.set_page_config(page_title="MemIA — POC GE-DESIGN", layout="wide")
 
 # ── Polices + tokens + layout GE-DESIGN ──
@@ -93,5 +107,8 @@ with st.sidebar:
     )
     if selected:
         st.switch_page(SIDEBAR_ID_TO_PAGE[selected])
+
+log_session_state("app.py")
+render_debug_panel()
 
 pages.run()
