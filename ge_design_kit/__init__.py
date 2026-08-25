@@ -4,6 +4,7 @@ from .tokens import inject_ge_tokens
 from .layout import inject_ge_layout, TOPBAR_SLOT_KEY
 from .topbar import ge_topbar
 from .breadcrumb import ge_breadcrumb
+from .checkbox import ge_checkbox
 from .surface import ge_surface
 from .buttons import (
     ge_label_spacer,
@@ -29,6 +30,7 @@ __all__ = [
     "TOPBAR_SLOT_KEY",
     "ge_topbar",
     "ge_breadcrumb",
+    "ge_checkbox",
     "ge_surface",
     "ge_label_spacer",
     "FILLED_BUTTON_KEY_PREFIX",
