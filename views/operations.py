@@ -55,67 +55,67 @@ def _import_manuel_dialog():
 if import_clicked:
     _import_manuel_dialog()
 
+st.header("Choisir la votation à analyser")
+
+with ge_surface("kpi-row"):
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        ge_kpi(4, "Opérations disponibles", key="kpi_total")
+    with c2:
+        ge_kpi(2, "Analyses terminées", key="kpi_done")
+    with c3:
+        ge_kpi(1, "Analyse en cours", key="kpi_progress")
+    with c4:
+        ge_kpi(1, "Non démarrée", key="kpi_none")
+    with c5:
+        ""  # colonne vide pour l'espacement
+
+    st.divider()
+    
+    # ── Ligne de filtres: widgets natifs, stylés via forms.py ──
+    with st.container(key="ge-filter-row"):
+        fc1, fc3, fc4, fc5, fc6 = st.columns([3.6, 1.3, 1.3, 1.3, 1.8])
+        with fc1:
+            # st.form lie le champ et le bouton: Entrée dans le champ
+            # déclenche la même soumission qu'un clic sur le bouton
+            with st.form(key="search-form", border=False):
+                ic1, ic2 = st.columns([5, 1])
+                with ic1:
+                    search_term = st.text_input(
+                        "Rechercher une opération",
+                        placeholder="Rechercher une opération...",
+                        key="op_search",
+                    )
+                with ic2:
+                    with st.container(key=f"{ICON_BUTTON_KEY_PREFIX}search"):
+                        ge_label_spacer()
+                        searched = st.form_submit_button("", icon=":material/search:")
+                if searched:
+                    st.session_state.last_search = search_term
+        with fc3:
+            scrutin_type = st.selectbox(
+                "Type de scrutin",
+                options=["Tous", "Votation", "Élection"],
+                key="filter_scrutin",
+            )
+        with fc4:
+            date_filter = st.selectbox(
+                "Date",
+                options=["Tous", "17.06.2025", "09.02.2025", "22.10.2025"],
+                key="filter_date",
+            )
+        with fc5:
+            canal_filter = st.selectbox(
+                "Canal",
+                options=["Tous", "Correspondance", "Urne"],
+                key="filter_canal",
+            )
+        with fc6:
+            with st.container(key=f"{GE_TOGGLE_KEY_PREFIX}filter_done"):
+                show_done = st.toggle("Opérations terminées", value=True, key="filter_done")
+
 # ── Tout le contenu de la page vit dans UNE seule carte GE-DESIGN ──
 with ge_surface("operations"):
-    st.subheader("Choisir la votation à analyser")
-
-    with ge_surface("kpi-row", variant="inset"):
-        c1, c2, c3, c4, c5 = st.columns(5)
-        with c1:
-            ge_kpi(4, "Opérations disponibles", key="kpi_total")
-        with c2:
-            ge_kpi(2, "Analyses terminées", key="kpi_done")
-        with c3:
-            ge_kpi(1, "Analyse en cours", key="kpi_progress")
-        with c4:
-            ge_kpi(1, "Non démarrée", key="kpi_none")
-        with c5:
-            ""  # colonne vide pour l'espacement
-
-        st.divider()
-
-        # ── Ligne de filtres: widgets natifs, stylés via forms.py ──
-        with st.container(key="ge-filter-row"):
-            fc1, fc3, fc4, fc5, fc6 = st.columns([3.6, 1.3, 1.3, 1.3, 1.8])
-            with fc1:
-                # st.form lie le champ et le bouton: Entrée dans le champ
-                # déclenche la même soumission qu'un clic sur le bouton
-                with st.form(key="search-form", border=False):
-                    ic1, ic2 = st.columns([5, 1])
-                    with ic1:
-                        search_term = st.text_input(
-                            "Rechercher une opération",
-                            placeholder="Rechercher une opération...",
-                            key="op_search",
-                        )
-                    with ic2:
-                        with st.container(key=f"{ICON_BUTTON_KEY_PREFIX}search"):
-                            ge_label_spacer()
-                            searched = st.form_submit_button("", icon=":material/search:")
-                    if searched:
-                        st.session_state.last_search = search_term
-            with fc3:
-                scrutin_type = st.selectbox(
-                    "Type de scrutin",
-                    options=["Tous", "Votation", "Élection"],
-                    key="filter_scrutin",
-                )
-            with fc4:
-                date_filter = st.selectbox(
-                    "Date",
-                    options=["Tous", "17.06.2025", "09.02.2025", "22.10.2025"],
-                    key="filter_date",
-                )
-            with fc5:
-                canal_filter = st.selectbox(
-                    "Canal",
-                    options=["Tous", "Correspondance", "Urne"],
-                    key="filter_canal",
-                )
-            with fc6:
-                with st.container(key=f"{GE_TOGGLE_KEY_PREFIX}filter_done"):
-                    show_done = st.toggle("Opérations terminées", value=True, key="filter_done")
-
     # ── Barre de sélection: réservée ICI visuellement ──
     selection_bar_slot = st.empty()
 
@@ -188,7 +188,7 @@ with ge_surface("operations"):
     # à jour de CE run — même structure/CSS qu'avant, juste déplacée. ──
     with selection_bar_slot.container():
         with ge_surface("selection-bar", variant="inset"):
-            with st.container(key="ge-selection-bar-row"):
+            with st.container(key="ge-selection-bar-row", horizontal=True):
                 sb_left, sb_right = st.columns(2)
                 with sb_left:
                     st.markdown(f"**Nombre d'opération(s) sélectionnée(s) : {count}**")
