@@ -199,15 +199,14 @@ def render_debug_console_page():
     """
     Page pop-out — appelée depuis app.py quand ?debug_console=1 est
     présent, AVANT le routing normal (st.navigation/pages.run). Ne lit
-    ni n'écrit session_state pour son affichage : tout repose sur
+    ni n'écrit session_state pour son affichage: tout repose sur
     BroadcastChannel, car cet onglet est une session Streamlit à part
     entière, distincte de celle de l'onglet principal.
     """
     st.markdown("### 🐛 MemIA — Panneau de debug (session_state)")
     st.caption(
         "Miroir live de session_state depuis l'onglet principal, via "
-        "BroadcastChannel — aucune donnée ne transite par le serveur "
-        "pour cet onglet. Garde-le ouvert à côté de l'app."
+        "BroadcastChannel"
     )
     st.html(f"""
     <div style="margin-bottom:8px; display:flex; align-items:center; gap:12px;">
