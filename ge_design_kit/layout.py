@@ -72,6 +72,22 @@ section[data-testid="stSidebar"] > div {{
     background: var(--md-sys-color-surface);
 }}
 
+/* ── Styles CSS pour la gallery de composants ── */
+.st-key-wrapper_gallery_container {{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+}}
+
+.st-key-wrapper_gallery_container  div:has(div.st-key-stepper_gallery_container) {{
+    position: sticky;
+    top: {TOPBAR_HEIGHT_PX}px
+}}
+
+.st-key-main_gallery_container {{
+    max-width: 80% !important;
+}}
+
 /* ── Line-height des titres : pas d'équivalent config.toml, ──
    ── donc CSS scopé strictement sur h1/h2/h3 (pas de sélecteur global) ── */
 h1 {{
